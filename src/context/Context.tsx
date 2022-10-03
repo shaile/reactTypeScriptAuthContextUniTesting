@@ -36,13 +36,14 @@ export const AuthProvider = ({ children }: AppProviderProps) => {
 
 	return (
 		<Suspense fallback={<CircularProgress />}>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AuthStateContext.Provider value={user}>
                 <AuthDispatchContext.Provider value={dispatch}>
+				<ErrorBoundary FallbackComponent={ErrorFallback}>
                     <Router>{children}</Router>
+				</ErrorBoundary>		
                 </AuthDispatchContext.Provider>
             </AuthStateContext.Provider>
-        </ErrorBoundary>
+        
 		</Suspense>
 	);
 };

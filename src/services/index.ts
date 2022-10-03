@@ -1,4 +1,4 @@
-import { storage, LOGINRES, LOGINREQ, LOGIN_URL, USERS_URL } from '../utils'
+import { storage, LOGINRES, LOGINREQ, LOGIN_URL, USERS_URL } from '@/utils'
 
 import axios from 'axios'
 import { fetchWrapper } from './FetchWrapper'

@@ -1,6 +1,6 @@
 import axios from 'axios'; 
 import { userService } from '.';
-import {storage} from '../utils';
+import {storage} from '@/utils';
 
 
 export const fetchWrapper = {
@@ -75,7 +75,7 @@ function _delete(url: RequestInfo | URL) {
 function authHeader() { 
   const {access_token: token} = storage.getToken(); 
   if (token) { 
-    return { Authorization: `Bearer ${token}`};
+    return { Authorization: `Bearer ${token}6`};
    }  
 } 
 

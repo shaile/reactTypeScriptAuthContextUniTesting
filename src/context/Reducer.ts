@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {storage} from '../utils';
+import {storage} from '@/utils';
 
 const currentUser: any  = storage.getToken();
 
