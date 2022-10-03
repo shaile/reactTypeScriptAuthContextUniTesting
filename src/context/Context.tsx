@@ -1,43 +1,48 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { createContext, JSXElementConstructor, ReactElement, ReactFragment, ReactPortal, useContext, useReducer } from 'react';
-import { AuthReducer, initialState } from './Reducer';
 
-interface AuthStateInterface {
-    userName: string;
-    token: string;
-    email: string;
-  } 
-  
-   const authStateContext = createContext<AuthStateInterface | any>({});
-   const authDispatchContext = createContext<any>({});
+import { ErrorBoundary } from 'react-error-boundary';
+import React, { createContext, Suspense, useContext, useReducer } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { initialState, AuthReducer } from './Reducer';
+import { ErrorFallback } from '../components/ErrorBoundry';
+import { CircularProgress } from '@mui/material';
 
-
+const AuthStateContext = createContext<any>('');
+const AuthDispatchContext = createContext<any>('');
 
 export function useAuthState() {
-    const currentUser = useContext(authStateContext);
-    if (currentUser === undefined) {
-      throw new Error('useAuthState must be used within a AuthProvider');
-    }
-   
-    return currentUser;
-  }
-   
-  export function useAuthDispatch() {
-    const context = useContext(authDispatchContext);
-    if (context === undefined) {
-      throw new Error('useAuthDispatch must be used within a AuthProvider');
-    }
-   
-    return context;
-  }
+	const context = useContext(AuthStateContext);
+	if (context === undefined) {
+		throw new Error('useAuthState must be used within a AuthProvider');
+	}
 
-  export const AuthProvider = (children: ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined) => {
-     const [user, dispatch] = useReducer(AuthReducer, initialState);
-    return(
-      <authStateContext.Provider value={user}>
-      <authDispatchContext.Provider value={dispatch}>
-        {children}
-      </authDispatchContext.Provider>
-    </authStateContext.Provider>
-    )
+	return context;
+}
+
+export function useAuthDispatch() {
+	const context = useContext(AuthDispatchContext);
+	if (context === undefined) {
+		throw new Error('useAuthDispatch must be used within a AuthProvider');
+	}
+
+	return context;
+}
+  
+  interface AppProviderProps {
+    children: React.ReactNode;
   };
+
+export const AuthProvider = ({ children }: AppProviderProps) => {
+	const [user, dispatch] = useReducer(AuthReducer, initialState);
+
+	return (
+		<Suspense fallback={<CircularProgress />}>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <AuthStateContext.Provider value={user}>
+                <AuthDispatchContext.Provider value={dispatch}>
+                    <Router>{children}</Router>
+                </AuthDispatchContext.Provider>
+            </AuthStateContext.Provider>
+        </ErrorBoundary>
+		</Suspense>
+	);
+};

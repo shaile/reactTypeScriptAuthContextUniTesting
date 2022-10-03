@@ -1,14 +1,18 @@
+import { storage } from '../utils';
 import { useRoutes } from 'react-router-dom'
+import { protectedRoutes } from './ProtectedRoutes';
 
-import Dashboard from '../pages/dashboard/Dashboard';
+import { publicRoutes } from './PublicRoutes'
+import { Layout } from '../components';
+import NotFound from '../pages/notFound/NotFound';
 
-import { publicRoutes } from './publicRoutes'
 export const AppRoutes = () => {
-  const commonRoutes = [{ path: '/', element: <Dashboard /> }]
+  const isLogin = storage.getToken();
+  const notFound = [{ path: '*', element: <NotFound /> }];
+  
+  const routes = isLogin? protectedRoutes:publicRoutes;
 
-  const routes = publicRoutes
+  const element = useRoutes([...routes, ...notFound])
 
-  const element = useRoutes([...routes, ...commonRoutes])
-
-  return <>{element}</>
+  return <Layout>{element}</Layout>
 }

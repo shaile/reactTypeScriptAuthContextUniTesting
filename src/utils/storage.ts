@@ -1,6 +1,6 @@
 const storagePrefix = 'react_'
 
-const storage = {
+export const storage = {
   getToken: () => {
     return JSON.parse(window.localStorage.getItem(`${storagePrefix}token`) as string)
   },
@@ -10,6 +10,4 @@ const storage = {
   clearToken: () => {
     window.localStorage.removeItem(`${storagePrefix}token`)
   },
-}
-
-export default storage
+}; 

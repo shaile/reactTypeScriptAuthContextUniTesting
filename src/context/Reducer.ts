@@ -1,24 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const currentUser: any  = localStorage.getItem('currentUser')
+import {storage} from '../utils';
 
-const user = localStorage.getItem('currentUser')
-  ? JSON.parse(currentUser).user
-  : '';
-const token = localStorage.getItem('currentUser')
-  ? JSON.parse(currentUser).auth_token
-  : '';
+const currentUser: any  = storage.getToken();
+
+const user = currentUser ? currentUser.userName : '';
+const token = currentUser? currentUser.access_token : '';
 
 export const initialState = {
-  userDetails: '' || user,
+  user: '' || user,
   token: '' || token,
   loading: false,
-  errorMessage: null
+  errorMessage: null,
 };
 
-export const AuthReducer = (initialState: any, action: { type: unknown; payload: { user: string; auth_token: string; }; error: string; }) => {
+export const AuthReducer = (initialState: any, action: any) => {
+    console.log('RESUCER response', action.error);
   switch (action.type) {
-    case 'REQUEST_LOGIN':
+    case 'REQUEST_INIT':
       return {
         ...initialState,
         loading: true
@@ -36,8 +35,13 @@ export const AuthReducer = (initialState: any, action: { type: unknown; payload:
         user: '',
         token: ''
       };
-
-    case 'LOGIN_ERROR':
+    case 'GET_USERS':
+        return {
+        ...initialState,
+        user: action.payload.Items,
+        count: action.payload.count
+        }
+    case 'ERROR':
       return {
         ...initialState,
         loading: false,
