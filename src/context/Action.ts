@@ -1,5 +1,6 @@
-import { userService } from '../services'; 
-import { LOGINREQ, LOGINRES } from '../utils';
+
+import { userService } from '@/services'; 
+import { LOGINREQ, LOGINRES } from '@/utils';
 
 export async function loginUser(dispatch: any, loginPayload: LOGINREQ) {
     try {
