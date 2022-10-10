@@ -8,15 +8,14 @@ const user = currentUser ? currentUser.userName : '';
 const token = currentUser? currentUser.access_token : '';
 
 export const initialState = {
-  user: '' || user, 
+  user: '' || user,
   token: '' || token,
-  usersData: '',
   loading: false,
   errorMessage: null,
 };
 
 export const AuthReducer = (initialState: any, action: any) => {
-    // console.log('RESUCER response', action.payload);
+    console.log('RESUCER response', action.error);
   switch (action.type) {
     case 'REQUEST_INIT':
       return {
@@ -26,7 +25,7 @@ export const AuthReducer = (initialState: any, action: any) => {
     case 'LOGIN_SUCCESS':
       return {
         ...initialState,
-        user: action.payload,
+        user: action.payload.user,
         token: action.payload.auth_token,
         loading: false
       };
@@ -34,21 +33,19 @@ export const AuthReducer = (initialState: any, action: any) => {
       return {
         ...initialState,
         user: '',
-        token: '',
-        loading: false
+        token: ''
       };
     case 'GET_USERS':
         return {
         ...initialState,
-        usersData: action.payload.Items,
-        count: action.payload.count,
-        loading: false
+        user: action.payload.Items,
+        count: action.payload.count
         }
     case 'ERROR':
       return {
         ...initialState,
         loading: false,
-        errorMessage: action.error,
+        errorMessage: action.error
       };
 
     default:

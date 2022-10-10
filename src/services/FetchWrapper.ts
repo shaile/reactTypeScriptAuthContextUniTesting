@@ -75,7 +75,7 @@ function _delete(url: RequestInfo | URL) {
 function authHeader() { 
   const {access_token: token} = storage.getToken(); 
   if (token) { 
-    return { Authorization: `Bearer ${token}6`};
+    return { Authorization: `Bearer ${token}`};
    }  
 } 
 

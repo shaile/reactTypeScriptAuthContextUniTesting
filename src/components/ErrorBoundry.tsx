@@ -1,6 +1,6 @@
 import { useAuthState } from '../context';
 import { Button } from '@mui/material';
-import { Layout } from './Layout';
+import { Layout } from './theme/Layout';
 
 export const ErrorFallback = () => {
   const {errorMessage} = useAuthState();

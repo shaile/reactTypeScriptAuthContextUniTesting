@@ -11,6 +11,7 @@ const AuthDispatchContext = createContext<any>('');
 
 export function useAuthState() {
 	const context = useContext(AuthStateContext);
+	console.log('lodin', context);
 	if (context === undefined) {
 		throw new Error('useAuthState must be used within a AuthProvider');
 	}
@@ -32,18 +33,16 @@ export function useAuthDispatch() {
   };
 
 export const AuthProvider = ({ children }: AppProviderProps) => {
-	const [user, dispatch] = useReducer(AuthReducer, initialState);
-
+	const [data,  dispatch] = useReducer(AuthReducer, initialState);  
 	return (
 		<Suspense fallback={<CircularProgress />}>
-            <AuthStateContext.Provider value={user}>
+            <AuthStateContext.Provider value={data}>
                 <AuthDispatchContext.Provider value={dispatch}>
 				<ErrorBoundary FallbackComponent={ErrorFallback}>
                     <Router>{children}</Router>
 				</ErrorBoundary>		
                 </AuthDispatchContext.Provider>
             </AuthStateContext.Provider>
-        
 		</Suspense>
 	);
 };

@@ -2,28 +2,72 @@
 import { useAuthState, useAuthDispatch } from '@/context';
 import  './Dashboard.css';
 import { getAllUsers } from '@/context/Action';
-import { useEffect } from 'react';
-import GridData from './GridData';
-import { Bomb } from '@/components/Error';
+import { Suspense, useEffect, useState } from 'react'; 
+import { bomb } from '@/components/Error';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { CircularProgress } from '@mui/material';
+
+const columns: GridColDef[] = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'firstName', headerName: 'First name', width: 130 },
+  { field: 'lastName', headerName: 'Last name', width: 130 },
+  {
+    field: 'email',
+    headerName: 'Email',
+    type: 'number',
+    width: 150,
+  },
+  {
+    field: 'phone',
+    headerName: 'Phone', 
+    sortable: false,
+    width: 100
+  },
+  {
+    field: 'country',
+    headerName: 'Country', 
+    sortable: false,
+    width: 160
+  },
+  {
+    field: 'city',
+    headerName: 'City', 
+    sortable: false,
+    width: 160
+  },
+];
+
 
 function Dashboard() { 
   const dispatch = useAuthDispatch(); 
-  const {user, errorMessage} = useAuthState();
+  const {usersData, errorMessage, loading} = useAuthState();
+  const [rows, setRows] = useState([])
+  const [load, setLoad] = useState(null)
 
-  useEffect(() =>{
+  useEffect(() =>{ 
+    console.log('AAAAAA', loading);
+    (errorMessage)? bomb: ''
     async function fetchUsers() {
-      getAllUsers(dispatch)
+      await getAllUsers(dispatch)
     }
-    fetchUsers()
+    fetchUsers();
+    setRows(usersData);
+    setLoad(loading);
+    
   }, []);
 
   
 
 	return (
-		<>
-      <Bomb error={errorMessage}/>
-      <GridData data={user}/>
-    </>
+		<div style={{ height: 400, width: '100%' }}> 
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection 
+      /> 
+    </div> 
 	);
 }
 
