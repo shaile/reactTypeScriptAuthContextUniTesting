@@ -1,61 +1,73 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useAuthDispatch, useAuthState, loginUser } from '../../context';
-import React, { useState } from 'react';  
+import React, { useState, useEffect } from 'react';
+import { GoogleLogin, GoogleLogout, useGoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
 import  './Login.css';
+import { loginUser, useAuthDispatch } from '@/context';
 
 
-function Login() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+function Login() { 
+	const [ profile, setProfile ] = useState<any>([]);
+	const dispatch = useAuthDispatch(); 
+    const clientId = '699112400964-03tv2de85nlr1g234cu048kfsnte8r5s.apps.googleusercontent.com';
 
-	const dispatch = useAuthDispatch();
-	const { loading, errorMessage } = useAuthState();
+	const { signIn, loaded } = useGoogleLogin({
+		onSuccess,
+		onFailure,
+		clientId,
+	  })
 
-	const handleLogin = async (e: { preventDefault: () => void; }) => {
-		e.preventDefault();
+	useEffect(() => {
+        const initClient = () => {
+            gapi.client.init({
+                clientId: clientId,
+                scope: ''
+            });
+        };
+        gapi.load('client:auth2', initClient); 
+		loaded ? signIn(): ''
+		
+    }, [loaded]);
 
-		try {
-			const response: any = await loginUser(dispatch, { username: email, password });
-			if (!response.username) return;
-		} catch (error) {
-			console.log(error);
+	function onSuccess(res: any){
+        setProfile(res.profileObj);
+		if(res.profileObj){
+			loginUser(dispatch, res)
 		}
-	};
+    };
 
+    function onFailure(err: any){
+        console.log('failed', err);
+    };
+
+	const logOut = () => {
+        setProfile(null);
+    };
 	return (
-		<div className="container">
-			<div >
-				<h1>Login Page</h1>
-				{errorMessage ? <p className="error">{errorMessage}</p> : null}
-				<form>
-					<div className="loginForm">
-						<div className="loginFormItem">
-							<label htmlFor='email'>Username</label>
-							<input
-								type='text'
-								id='email'
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								disabled={loading}
-							/>
-						</div>
-						<div className="loginFormItem">
-							<label htmlFor='password'>Password</label>
-							<input
-								type='password'
-								id='password'
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								disabled={loading}
-							/>
-						</div>
-					</div>
-					<button onClick={handleLogin} disabled={loading}>
-						login
-					</button>
-				</form>
+		<div>
+		<h2>React Google Login {JSON.stringify(profile)}</h2>
+		<br />
+		<br />
+		{profile ? (
+			<div>
+				<img src={profile.imageUrl} alt="user image" />
+				<h3>User Logged in</h3>
+				<p>Name: {profile.name}</p>
+				<p>Email Address: {profile.email}</p>
+				<br />
+				<br />
+				<GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />
 			</div>
-		</div>
+		) : (
+			<GoogleLogin
+				clientId={clientId}
+				buttonText="Sign in with Google"
+				onSuccess={onSuccess}
+				onFailure={onFailure}
+				cookiePolicy={'single_host_origin'}
+				isSignedIn={true}
+			/>
+		)}
+	</div>
 	);
 }
 

@@ -1,12 +1,11 @@
 
-import { userService } from '@/services'; 
-import { LOGINREQ, LOGINRES } from '@/utils';
+import { userService } from '@/services';  
+import { storage } from '@/utils';
 
-export async function loginUser(dispatch: any, loginPayload: LOGINREQ) {
+export async function loginUser(dispatch: any, loginResponse: any) {
     try {
-      dispatch({ type: 'REQUEST_INIT' });
-      const data: LOGINRES = await userService.login(loginPayload);  
-      dispatch({ type: 'LOGIN_SUCCESS', payload: data });  
+      dispatch({ type: 'LOGIN_SUCCESS', payload: loginResponse });  
+      storage.setToken(loginResponse)
     } catch (error) {
       dispatch({ type: 'ERROR', error: error });
     }
