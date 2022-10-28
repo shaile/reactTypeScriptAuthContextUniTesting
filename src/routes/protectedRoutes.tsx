@@ -1,11 +1,21 @@
-import About from '../pages/about/About'
-import Dashboard from '../pages/dashboard/Dashboard'
-
+import { About, AddUser, Dashboard, User, Users } from '@/pages'
 
 export const protectedRoutes = [
   {
     path: '/',
     element: <Dashboard />,
+  },
+  {
+    path: '/user',
+    element: <User />,
+  },
+  {
+    path: '/users',
+    element: <Users />,
+  },
+  {
+    path: '/addUser',
+    element: <AddUser />,
   },
   {
     path: '/about',

@@ -1,11 +1,9 @@
 .logoutBtn {
-    height: '30px';
-    width: '100px';
-  }
-  .dashboardPage {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  
+  height: '30px';
+  width: '100px';
+}
+.dashboardPage {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}

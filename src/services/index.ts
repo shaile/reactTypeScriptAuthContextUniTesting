@@ -1,13 +1,12 @@
 import { storage, LOGINREQ, LOGIN_URL, USERS_URL } from '@/utils'
 import axios from 'axios'
 import { fetchWrapper } from './FetchWrapper'
- 
 
 export const userService = {
   login,
   logout,
   getAll,
-  
+  getUserById,
 }
 
 /**
@@ -18,9 +17,9 @@ export const userService = {
 async function login(loginPayload: LOGINREQ): Promise<any> {
   try {
     const header: any = {
-      headers: { 'Content-Type': 'application/json' }
-    } 
-    const {data} = await axios.post(LOGIN_URL, JSON.stringify(loginPayload), header);
+      headers: { 'Content-Type': 'application/json' },
+    }
+    const { data } = await axios.post(LOGIN_URL, JSON.stringify(loginPayload), header)
     if (data) {
       storage.setToken(data)
     }
@@ -35,14 +34,14 @@ function logout() {
 }
 
 /**
- * 
+ *
  * @returns array of users
  */
 async function getAll(): Promise<any> {
-  try{
-    const data = await fetchWrapper.get(`${USERS_URL}`); 
-    return data;
-  }catch(error){
+  try {
+    const data = await fetchWrapper.get(`${USERS_URL}`)
+    return data
+  } catch (error) {
     throw new Error(`${error}`)
   }
 }
@@ -51,9 +50,9 @@ async function getAll(): Promise<any> {
 //   return await fetchWrapper.get(baseUrl)
 // }
 
-// async function getUserById(id: any) {
-//   return await fetchWrapper.get(`${publicRuntimeConfig}/profile/${id}`)
-// }
+async function getUserById(id: any) {
+  return await fetchWrapper.get(`${USERS_URL}/${id}`)
+}
 
 // async function addUser(body: any) {
 //   console.log('User service add User', body)

@@ -1,10 +1,8 @@
-import axios from 'axios'; 
-import { userService } from '.';
-import {storage} from '@/utils';
-
+import axios from 'axios'
+import { userService } from '.'
+import { storage } from '@/utils'
 
 export const fetchWrapper = {
- 
   get,
 
   post,
@@ -12,15 +10,15 @@ export const fetchWrapper = {
   put,
 
   delete: _delete,
-};
+}
 
 async function get(url: any) {
   const config: any = {
-		headers: authHeader(),
-	};
-  
-  const response = await axios.get(url, config); 
-  return handleResponse(response);
+    headers: authHeader(),
+  }
+
+  const response = await axios.get(url, config)
+  return handleResponse(response)
 }
 
 async function post(url: string | URL, body: any) {
@@ -38,11 +36,11 @@ async function post(url: string | URL, body: any) {
     credentials: 'include',
 
     body: JSON.stringify(body),
-  };
+  }
 
-  const response = await fetch(url, requestOptions);
+  const response = await fetch(url, requestOptions)
 
-  return handleResponse(response);
+  return handleResponse(response)
 }
 
 async function put(url: RequestInfo | URL, body: any) {
@@ -52,10 +50,10 @@ async function put(url: RequestInfo | URL, body: any) {
     headers: { 'Content-Type': 'application/json', ...authHeader() },
 
     body: JSON.stringify(body),
-  };
+  }
 
-  const response = await fetch(url, requestOptions);
-  return handleResponse(response);
+  const response = await fetch(url, requestOptions)
+  return handleResponse(response)
 }
 
 // prefixed with underscored because delete is a reserved word in javascript
@@ -65,34 +63,33 @@ function _delete(url: RequestInfo | URL) {
     method: 'DELETE',
 
     headers: authHeader(),
-  };
+  }
 
-  return fetch(url, requestOptions).then(handleResponse);
+  return fetch(url, requestOptions).then(handleResponse)
 }
 
 // helper functions
 
-function authHeader() { 
-  const {access_token: token} = storage.getToken(); 
-  if (token) { 
-    return { Authorization: `Bearer ${token}`};
-   }  
-} 
-
+function authHeader() {
+  const { access_token: token } = storage.getToken()
+  if (token) {
+    return { Authorization: `Bearer ${token}` }
+  }
+}
 
 async function handleResponse(response: any) {
-  const statusCode: any = [200, 201] ;
-  const {data} = response;
+  const statusCode: any = [200, 201]
+  const { data } = response
   if (!statusCode.includes(response.status)) {
     if ([401, 403].includes(response.status) && storage.getToken()) {
       // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-      userService.logout();
+      userService.logout()
     }
 
-    const error = (data && data.message) || response.statusText;
+    const error = (data && data.message) || response.statusText
 
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-  
-  return data;
+
+  return data
 }
