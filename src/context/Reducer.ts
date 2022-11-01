@@ -12,7 +12,7 @@ export const initialState = {
   token: '' || token,
   usersData: '',
   usersDetails: '',
-  loading: true,
+  loading: false,
   errorMessage: null,
 }
 
@@ -24,6 +24,11 @@ export const AuthReducer = (initialState: any, action: any) => {
         ...initialState,
         loading: true,
       }
+    case 'REQUEST_FINISH':
+        return {
+          ...initialState,
+          loading: false,
+        }  
     case 'LOGIN_SUCCESS':
       return {
         ...initialState,

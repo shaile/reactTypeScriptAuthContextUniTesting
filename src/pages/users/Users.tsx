@@ -35,17 +35,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Users() {
   const navigate = useNavigate()
-  const dispatch = useAuthDispatch()
-  const user = useAuthState()
+  const dispatch = useAuthDispatch() 
   const [rows, setRows] = useState<any>([])
 
   async function fetchUsers() {
-    await getAllUsers(dispatch)
-    setRows(user.usersData)
+    const data  = await getAllUsers(dispatch)
+    setRows(data)
   }
 
-  React.useEffect(() => {
-    user.errorMessage ? bomb : ''
+  React.useEffect(() => { 
     fetchUsers()
   }, [])
 

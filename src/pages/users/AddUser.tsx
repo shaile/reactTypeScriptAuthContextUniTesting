@@ -1,3 +1,5 @@
+import { useAuthDispatch } from '@/context'
+import { addUser } from '@/context/Action'
 import React from 'react'
 
 const initialFormData = Object.freeze({
@@ -7,6 +9,7 @@ const initialFormData = Object.freeze({
 
 const AddUser = () => {
   const [formData, updateFormData] = React.useState(initialFormData)
+  const dispatch = useAuthDispatch()
 
   const handleChange = (e: any) => {
     updateFormData({
@@ -17,9 +20,10 @@ const AddUser = () => {
     })
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
     console.log(formData)
+    await addUser(dispatch, formData)
     // ... submit to API or something
   }
   return (

@@ -7,6 +7,7 @@ export const userService = {
   logout,
   getAll,
   getUserById,
+  addUser
 }
 
 /**
@@ -54,8 +55,8 @@ async function getUserById(id: any) {
   return await fetchWrapper.get(`${USERS_URL}/${id}`)
 }
 
-// async function addUser(body: any) {
-//   console.log('User service add User', body)
+async function addUser(body: any) {
+  console.log('User service add User', body)
 
-//   return await fetchWrapper.post(`${publicRuntimeConfig}/addPandit`, body)
-// }
+  return await fetchWrapper.post(`${USERS_URL}`, body)
+}
