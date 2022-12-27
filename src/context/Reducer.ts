@@ -25,10 +25,10 @@ export const AuthReducer = (initialState: any, action: any) => {
         loading: true,
       }
     case 'REQUEST_FINISH':
-        return {
-          ...initialState,
-          loading: false,
-        }  
+      return {
+        ...initialState,
+        loading: false,
+      }
     case 'LOGIN_SUCCESS':
       return {
         ...initialState,

@@ -23,9 +23,9 @@ export async function googleLoginUser(dispatch: any, loginResponse: any) {
 export async function getAllUsers(dispatch: any): Promise<any> {
   try {
     dispatch({ type: 'REQUEST_INIT' })
-    const {Items}: any = await userService.getAll()
-    dispatch({ type: 'REQUEST_FINISH'})
-    return Items;
+    const { Items }: any = await userService.getAll()
+    dispatch({ type: 'REQUEST_FINISH' })
+    return Items
   } catch (error: any) {
     dispatch({ type: 'ERROR', error: error })
   }
@@ -44,12 +44,11 @@ export async function addUser(dispatch: any, data: any): Promise<any> {
   try {
     dispatch({ type: 'REQUEST_INIT' })
     await userService.addUser(data)
-    dispatch({ type: 'REQUEST_FINISH'})
+    dispatch({ type: 'REQUEST_FINISH' })
   } catch (error: any) {
     dispatch({ type: 'ERROR', error: error })
   }
 }
-
 
 export async function logout(dispatch: any) {
   dispatch({ type: 'LOGOUT' })

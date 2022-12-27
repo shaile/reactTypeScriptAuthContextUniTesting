@@ -7,7 +7,7 @@ export const userService = {
   logout,
   getAll,
   getUserById,
-  addUser
+  addUser,
 }
 
 /**

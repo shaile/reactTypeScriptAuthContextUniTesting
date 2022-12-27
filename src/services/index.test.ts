@@ -1,4 +1,4 @@
-import { storage, LOGINRES, LOGINREQ, LOGIN_URL, USERS_URL } from '@/utils'
+import { LOGINREQ } from '@/utils'
 import { userService } from '.'
 import mockAxios from './__mocks__/axios'
 
@@ -14,13 +14,6 @@ describe('services', () => {
       const loginPayload: LOGINREQ = {
         username: 'shaile.martin@yopmail.com',
         password: '123',
-      }
-
-      const requestOptions: object = {
-        method: 'POST',
-        url: `${LOGIN_URL}`,
-        data: JSON.stringify(loginPayload),
-        headers: { 'Content-Type': 'application/json' },
       }
 
       // given

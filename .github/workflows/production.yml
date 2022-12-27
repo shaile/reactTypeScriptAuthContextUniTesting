@@ -25,6 +25,9 @@ jobs:
     - name: Unit Tests
       run: |
         npm run test:coverage
+    - name: Run Lint
+      run: |
+        npm run lint    
     - name: Production Build
       run: |
         npm run build
