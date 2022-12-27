@@ -1,4 +1,4 @@
-/// <reference lib="webworker" />
+// / <reference lib="webworker" />
 /* eslint-disable no-restricted-globals */
 
 // This service worker can be customized!
@@ -8,13 +8,14 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
-declare const self: ServiceWorkerGlobalScope;
+declare const self: any; // ServiceWorkerGlobalScope
 
 clientsClaim();
 
@@ -71,7 +72,7 @@ registerRoute(
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
+self.addEventListener('message', (event: any) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
