@@ -28,5 +28,5 @@
   "background_color": "#1e1c1a",
   "display": "fullscreen",
   "scope": "/",
-  "start_url": "http://localhost:3000/"
+  "start_url": "http://panditreact.s3-website.ap-south-1.amazonaws.com/"
 }
