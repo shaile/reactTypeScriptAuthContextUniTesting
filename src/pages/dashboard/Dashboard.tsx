@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Dashboard() {
   return (
     <>
@@ -6,7 +8,7 @@ function Dashboard() {
         <nav>
           <ol className='breadcrumb'>
             <li className='breadcrumb-item'>
-              <a href='index.html'>Home</a>
+            <Link to={'/'} className='logo d-flex align-items-center' >Home</Link>
             </li>
             <li className='breadcrumb-item active'>Dashboard</li>
           </ol>
